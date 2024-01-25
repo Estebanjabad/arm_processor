@@ -1,0 +1,11 @@
+# Ignore folders
+simulation/
+db/
+incremental_db/
+.qsys_edit/
+# Ignore files with extensions
+*.bak
+*.rpt
+*.summary
+*.smsg
+*.done
