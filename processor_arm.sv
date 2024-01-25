@@ -1,4 +1,4 @@
-// TOP-LEVEL PROCESSOR
+// PIPELINED PROCESSOR
 
 module processor_arm #(parameter N = 64)
 							(input logic CLOCK_50, reset,
@@ -10,9 +10,10 @@ module processor_arm #(parameter N = 64)
 	logic [3:0] AluControl;
 	logic reg2loc, regWrite, AluSrc, Branch, memtoReg, memRead, memWrite;
 	logic [N-1:0] DM_readData, IM_address;  //DM_addr, DM_writeData
-	logic DM_readEnable; //DM_writeEnable	
+	logic DM_readEnable; //DM_writeEnable
+	logic [10:0] instr;
 	
-	controller 		c 			(.instr(q[31:21]), 
+	controller 		c 			(.instr(instr), 
 									.AluControl(AluControl), 
 									.reg2loc(reg2loc), 
 									.regWrite(regWrite), 
@@ -52,6 +53,12 @@ module processor_arm #(parameter N = 64)
 									.address(DM_addr[8:3]), 
 									.writeData(DM_writeData), 
 									.readData(DM_readData), 
-									.dump(dump)); 				 
+									.dump(dump)); 							
+		 
+							
+	flopr #(11)		IF_ID_TOP(.clk(CLOCK_50),
+									.reset(reset), 
+									.d(q[31:21]), 
+									.q(instr));
  	
 endmodule
