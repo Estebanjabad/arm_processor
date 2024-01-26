@@ -24,4 +24,3 @@ module regfile(input logic clk,
 			if(we3)REG[wa3] <= wa3!=31 ? wd3 : 0;
 			
 endmodule
-
