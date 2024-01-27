@@ -16,8 +16,9 @@ module maindec(input logic [10:0] Op,
 			11'b100_0101_1000: aux=9'b000100010;		//ADD 
 			11'b110_0101_1000: aux=9'b000100010;		//SUB
 			11'b100_0101_0000: aux=9'b000100010;		//AND
-			11'b101_0101_0000: aux=9'b000100010;		//ORR 
-			default: 			 aux=9'b000000000;
+			11'b101_0101_0000: aux=9'b000100010;		//ORR
+			11'b110_1001_01??: aux=9'b010100010;        //MOVZ 
+			default: 		   aux=9'b000000000;
 		endcase		
 		assign Reg2Loc = aux[8];
 		assign ALUSrc = aux[7];

@@ -17,7 +17,7 @@ module datapath #(parameter N = 64)
 					
 	logic PCSrc;
 	logic [N-1:0] PCBranch_E, aluResult_E, writeData_E, writeData3; 
-	logic [N-1:0] signImm_D, readData1_D, readData2_D;
+	logic [N-1:0] Imm_D, readData1_D, readData2_D;
 	logic zero_E;
 	logic [95:0] qIF_ID;
 	logic [270:0] qID_EX;
@@ -42,7 +42,7 @@ module datapath #(parameter N = 64)
 										.clk(clk),
 										.writeData3_D(writeData3),
 										.instr_D(qIF_ID[31:0]), 
-										.signImm_D(signImm_D), 
+										.Imm_D(Imm_D), 
 										.readData1_D(readData1_D),
 										.readData2_D(readData2_D),
 										.wa3_D(qMEM_WB[4:0]));				
@@ -51,7 +51,7 @@ module datapath #(parameter N = 64)
 	flopr 	#(271)	ID_EX 	(.clk(clk),
 										.reset(reset), 
 										.d({AluSrc, AluControl, Branch, memRead, memWrite, regWrite, memtoReg,	
-											qIF_ID[95:32], signImm_D, readData1_D, readData2_D, qIF_ID[4:0]}),
+											qIF_ID[95:32], Imm_D, readData1_D, readData2_D, qIF_ID[4:0]}),
 										.q(qID_EX));	
 	
 										
