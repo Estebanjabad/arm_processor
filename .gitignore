@@ -2,6 +2,7 @@
 simulation/
 db/
 incremental_db/
+output_files/
 .qsys_edit/
 # Ignore files with extensions
 *.bak
