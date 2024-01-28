@@ -70,9 +70,6 @@ set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME sl_tb -section_id sl_tb
 set_global_assignment -name EDA_TEST_BENCH_NAME mux3_tb -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id mux3_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME mux3_tb -section_id mux3_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE processor_tb.sv -section_id processor_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE sl_tb.sv -section_id sl_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE mux3_tb.sv -section_id mux3_tb
 set_global_assignment -name SYSTEMVERILOG_FILE forwarding.sv
 set_global_assignment -name SYSTEMVERILOG_FILE mux3.sv
 set_global_assignment -name SYSTEMVERILOG_FILE sl.sv
@@ -97,7 +94,16 @@ set_global_assignment -name SYSTEMVERILOG_FILE alu.sv
 set_global_assignment -name SYSTEMVERILOG_FILE adder.sv
 set_global_assignment -name SYSTEMVERILOG_FILE sl_tb.sv
 set_global_assignment -name SYSTEMVERILOG_FILE mux3_tb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE flopre.sv
+set_global_assignment -name SYSTEMVERILOG_FILE flopre_tb.sv
+set_global_assignment -name EDA_TEST_BENCH_NAME flopre_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id flopre_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME flopre_tb -section_id flopre_tb
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name EDA_TEST_BENCH_FILE processor_tb.sv -section_id processor_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sl_tb.sv -section_id sl_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE mux3_tb.sv -section_id mux3_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE flopre_tb.sv -section_id flopre_tb
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
