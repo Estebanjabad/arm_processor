@@ -1,13 +1,15 @@
 // CONTROLLER
 
 module controller(input logic [10:0] instr,
+				    	input logic control_enable,
 						output logic [3:0] AluControl,						
 						output logic reg2loc, regWrite, AluSrc, Branch,
 											memtoReg, memRead, memWrite);
 											
 	logic [1:0] AluOp_s;
 											
-	maindec 	decPpal 	(.Op(instr), 
+	maindec 	decPpal 	(.control_enable(control_enable),
+							.Op(instr), 
 							.Reg2Loc(reg2loc), 
 							.ALUSrc(AluSrc), 
 							.MemtoReg(memtoReg), 

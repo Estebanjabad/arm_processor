@@ -13,7 +13,7 @@ module datapath #(parameter N = 64)
 					input logic [31:0] IM_readData,
 					input logic [N-1:0] DM_readData,
 					output logic [N-1:0] IM_addr, DM_addr, DM_writeData,
-					output logic DM_writeEnable, DM_readEnable );					
+					output logic DM_writeEnable, DM_readEnable, IF_ID_enable, control_enable );					
 					
 	logic PCSrc;
 	logic [N-1:0] PCBranch_E, aluResult_E, writeData_E, writeData3; 
@@ -26,19 +26,21 @@ module datapath #(parameter N = 64)
 	logic [4:0] reg_rd, reg_rm, reg_rn;
 	logic [1:0] forwardA, forwardB;
 	logic [N-1:0] readData1_E, readData2_E;
-	
-	fetch 	#(64) 	FETCH 	(.PCSrc_F(PCSrc),
+	logic PC_enable;
+
+	fetch 	#(64) 	FETCH 	(.PC_enable(PC_enable),
+										.PCSrc_F(PCSrc),
 										.clk(clk),
 										.reset(reset),
 										.PCBranch_F(qEX_MEM[197:134]),
 										.imem_addr_F(IM_addr));								
 					
 	
-	flopr 	#(96)		IF_ID 	(.clk(clk),
+	flopre 	#(96)		IF_ID 	(.enable(IF_ID_enable),	
+										.clk(clk),
 										.reset(reset), 
 										.d({IM_addr, IM_readData}),
-										.q(qIF_ID));
-										
+										.q(qIF_ID));			
 	
 	decode 	#(64) 	DECODE 	(.regWrite_D(qMEM_WB[134]),
 										.reg2loc_D(reg2loc), 
@@ -51,7 +53,16 @@ module datapath #(parameter N = 64)
 										.reg_rd(reg_rd),
 										.reg_rm(reg_rm),
 										.reg_rn(reg_rn),
-										.wa3_D(qMEM_WB[4:0]));				
+										.wa3_D(qMEM_WB[4:0]));	
+
+
+	hazard_detection HAZARD_DETECTION (.ID_EX_memRead(qID_EX[264]),
+									   .ID_EX_reg_rd(qID_EX[285:281]),
+									   .IF_ID_reg_rm(reg_rm),
+									   .IF_ID_reg_rn(reg_rn),
+									   .IF_ID_enable(IF_ID_enable),
+									   .control_enable(control_enable),
+									   .PC_enable(PC_enable));		
 																									
 									
 	flopr 	#(286)	ID_EX 	(.clk(clk),
