@@ -13,7 +13,7 @@ module datapath #(parameter N = 64)
 					input logic [31:0] IM_readData,
 					input logic [N-1:0] DM_readData,
 					output logic [N-1:0] IM_addr, DM_addr, DM_writeData,
-					output logic DM_writeEnable, DM_readEnable, IF_ID_enable, control_enable );					
+					output logic DM_writeEnable, DM_readEnable, IF_ID_enable);					
 					
 	logic PCSrc;
 	logic [N-1:0] PCBranch_E, aluResult_E, writeData_E, writeData3; 
@@ -27,6 +27,8 @@ module datapath #(parameter N = 64)
 	logic [1:0] forwardA, forwardB;
 	logic [N-1:0] readData1_E, readData2_E;
 	logic PC_enable;
+	logic control_enable;
+	logic  [9:0] control_signals;
 
 	fetch 	#(64) 	FETCH 	(.PC_enable(PC_enable),
 										.PCSrc_F(PCSrc),
@@ -63,11 +65,13 @@ module datapath #(parameter N = 64)
 									   .IF_ID_enable(IF_ID_enable),
 									   .control_enable(control_enable),
 									   .PC_enable(PC_enable));		
-																									
-									
+
+	mux2 #(10) CONTROL_ENABLER (.d1({AluSrc, AluControl, Branch, memRead, memWrite, regWrite, memtoReg}), 
+		 .d0(10'b0000000000), .s(control_enable), .y(control_signals));														
+
 	flopr 	#(286)	ID_EX 	(.clk(clk),
 										.reset(reset), 
-										.d({reg_rd, reg_rm, reg_rn, AluSrc, AluControl, Branch, memRead, memWrite, regWrite, memtoReg,	
+										.d({reg_rd, reg_rm, reg_rn, control_signals,	
 											qIF_ID[95:32], Imm_D, readData1_D, readData2_D, qIF_ID[4:0]}),
 										.q(qID_EX));	
 
